@@ -1,6 +1,5 @@
 from bitcoinlib.wallets import Wallet
-from bitcoinlib.mnemonic import Mnemonic
-import random, requests, traceback, sys, datetime
+import random, requests, sys, datetime
 
 class Logger:
     def __init__(self, filename):
@@ -11,41 +10,30 @@ class Logger:
         self.terminal.write(message)
         self.log.write(message)
 
-    def flush(self):
-        # Required for Python stdout compatibility
-        pass
-
-
+    def flush(self): pass
 
 def get_bip39_wordlist():
-    """Fetches the official BIP-39 English word list."""
     url = "https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/english.txt"
     response = requests.get(url)
     response.raise_for_status()
     return response.text.splitlines()
 
 def get_random_bip39_words(n=12):
-    """Returns n random words from the BIP-39 English word list."""
     wordlist = get_bip39_wordlist()
     return random.sample(wordlist, n)
 
 if __name__ == "__main__":
-    # Example: generate a random 12-word phrase
     random_words = get_random_bip39_words(12)
     print(" ".join(random_words))
 
 
 def restore_wallet_from_seed(seed_phrase, wallet_name="restored_wallet"):
-    """
-    Restore a Bitcoin wallet from seed phrase and check balance
-    """
     try:
-        # Restore wallet from seed phrase
         wallet = Wallet.create(
             wallet_name,
             keys=seed_phrase,
             network='bitcoin',
-            witness_type='segwit',  # or 'legacy' or 'p2sh-segwit'
+            witness_type='segwit',
             account_id=0
         )
         
