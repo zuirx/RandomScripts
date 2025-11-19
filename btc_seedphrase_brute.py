@@ -1,3 +1,5 @@
+# try to be rich trying to find a recover code for a btc wallet
+
 from bitcoinlib.wallets import Wallet
 import random, requests, sys, datetime
 
